@@ -1,0 +1,194 @@
+algorithm learning...
+---- test sort_insertion ----
+input_n: 10
+input: 4 7 3 6 9 1 0 4 6 4 
+output: 0 1 3 4 4 4 6 6 7 9 
+---- test sort_merge ----
+input_n: 10
+input: 4 7 3 6 9 1 0 4 6 4 
+output: 0 1 3 4 4 4 6 6 7 9 
+---- test find_maximum_subarray ----
+input_n: 16
+input: 13 -3 -25 20 -3 -16 -23 18 20 -7 12 -5 -22 15 -4 7 
+left: [7]18
+right: [10]12
+sum: 43
+---- test Heap ----
+input_n: 10
+input: 4 7 3 6.1 9 1 5 4.1 6 0 
+heap: 
+0
+1	3
+6	4.1	4	5
+7	6.1	9	
+sort_heap: 0 1 3 4 4.1 5 6 6.1 7 9 
+heap2: 
+0
+4	1
+4.1	7	3	5
+6.1	6	9	
+sort_heap2: 0 1 3 4 4.1 5 6 6.1 7 9 
+---- test sort_quick ----
+input_n: 10
+input: 4 7 3 6 9 1 0 4 6 4 
+output: 0 1 3 4 4 4 6 6 7 9 
+---- test sort_counting ----
+input_n: 10
+input: 40 70 30 60 90 10 0 50 80 40 
+output: 0 10 30 40 40 50 60 70 80 90 
+---- test sort_radix ----
+input_n: 10
+input: 40 70 30 60 90 10 0 50 80 40 
+output: 0 10 30 40 40 50 60 70 80 90 
+---- test sort_bucket ----
+input_n: 10
+input: 0.43 0.76 0.3 0.6 0.72 0.1 0 0.5 0.8 0.44 
+output: 0 0.1 0.3 0.43 0.44 0.5 0.6 0.72 0.76 0.8 
+---- test select_Xth ----
+input_n: 10
+input: 0.43 0.76 0.3 0.6 0.72 0.1 0 0.5 0.8 0.44 
+2nd: 0.1
+3rd: 0.3
+9th: 0.76
+---- test select_Xth_v2 ----
+input_n: 10
+input: 0.43 0.76 0.3 0.6 0.72 0.1 0 0.5 0.8 0.44 
+2nd: 0.1
+3rd: 0.3
+9th: 0.76
+---- test Stack ----
+input_n: 10
+input: 4 7 3 6.1 9 1 5 4.1 6 0 
+pop: 0 6 4.1 5 1 9 6.1 3 7 4 
+---- test Queue ----
+input_n: 10
+input: 4 7 3 6.1 9 1 5 4.1 6 0 
+dequeue: 4 7 3 6.1 9 1 5 4.1 6 0 
+---- test LinkedList ----
+input_n: 10
+input: [1]4 [22]7 [333]3 [4]6.1 [55]9 [666]1 [7]5 [8]4.1 [9]6 [32]0 
+l[1]=4
+l[22]=7
+l[333]=3
+l[4]=6.1
+l[55]=9
+l[666]=1
+l[7]=5
+l[8]=4.1
+l[9]=6
+l[32]=0
+---- test ChainedHashTable ----
+input_n: 10
+input: [1]4 [22]7 [333]3 [4]6.1 [55]9 [666]1 [7]5 [8]4.1 [9]6 [32]0 
+hash(1)=6   l[1]=4
+hash(22)=5   l[22]=7
+hash(333)=8   l[333]=3
+hash(4)=4   l[4]=6.1
+hash(55)=9   l[55]=9
+hash(666)=6   l[666]=1
+hash(7)=3   l[7]=5
+hash(8)=9   l[8]=4.1
+hash(9)=5   l[9]=6
+hash(32)=7   l[32]=0
+---- test HashTable ----
+input_n: 10
+input: [1]4 [22]7 [333]3 [4]6.1 [55]9 [666]1 [7]5 [8]4.1 [9]6 [32]0 
+hash:8,9,10   l[1]=4
+hash:7,3,12   l[22]=7
+hash:10,5,0   l[333]=3
+hash:6,10,1   l[4]=6.1
+hash:12,2,5   l[55]=9
+hash:7,10,0   l[666]=1
+hash:4,11,5   l[7]=5
+hash:12,7,2   l[8]=4.1
+hash:7,3,12   l[9]=6
+hash:10,3,9   l[32]=0
+---- test BinarySearchTree ----
+input_n: 8
+input: 4 7 3 9 1 5 6 2 
+after insert x5: 
+1 3 4 7 9 
+4 
+3 7 
+1 0 0 9 
+finish insert: 
+1 2 3 4 5 6 7 9 
+4 
+3 7 
+1 0 5 9 
+0 2 0 0 0 6 0 0 
+search 5: 5
+minimum: 1
+maximum: 9
+successor(5): 6
+predecessor(5): 4
+after remove 4: 
+1 2 3 5 6 7 9 
+3 
+1 7 
+0 2 5 9 
+0 0 0 0 0 6 0 0 
+after remove 3: 
+1 2 5 6 7 9 
+5 
+1 7 
+0 2 6 9 
+after remove 5: 
+1 2 6 7 9 
+2 
+1 7 
+0 0 6 9 
+---- test RBTree ----
+input_n: 8
+input: 1 2 3 5 6 7 4 8 
+after insert 1: 
+B1 
+after insert 2: 
+B1 
+B0 R2 
+after insert 3: 
+B2 
+R1 R3 
+after insert 5: 
+B2 
+B1 B3 
+B0 B0 B0 R5 
+after insert 6: 
+B2 
+B1 B5 
+B0 B0 R3 R6 
+after insert 7: 
+B2 
+B1 R5 
+B0 B0 B3 B6 
+B0 B0 B0 B0 B0 B0 B0 R7 
+after insert 4: 
+B2 
+B1 R5 
+B0 B0 B3 B6 
+B0 B0 B0 B0 B0 R4 B0 R7 
+after insert 8: 
+B2 
+B1 R5 
+B0 B0 B3 B7 
+B0 B0 B0 B0 B0 R4 R6 R8 
+sort: 1 2 3 4 5 6 7 8 
+height: 4
+black height: 2
+search 5: 3
+minimum: 1
+maximum: 8
+successor(5): 4
+predecessor(5): 2
+after remove 1: 
+B5 
+R3 B7 
+B2 B4 R6 R8 
+after remove 4: 
+B5 
+B3 B7 
+R2 B0 R6 R8 
+after remove 3: 
+B5 
+B2 B7 
+B0 B0 R6 R8 
