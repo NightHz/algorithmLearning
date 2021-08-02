@@ -1,43 +1,15 @@
 #include <iostream>
 #include "sort.h"
+#include "analysis_algorithms.h"
 #include "heap.h"
 #include "data_structure.h"
 #include "hash_table.h"
 #include "binary_search_tree.h"
 #include "rb_tree.h"
-
-void find_maximum_subarray(const int *p, int n, int &il, int &ir, int &s)
-{
-	if (n <= 1)
-		il = 0, ir = 0;
-	else
-	{
-		int ln = n / 2;
-		int rn = n - ln;
-		int lil, lir, ls, ril, rir, rs;
-		find_maximum_subarray(p, ln, lil, lir, ls);
-		find_maximum_subarray(p + ln, rn, ril, rir, rs);
-		// crossing mid
-		int i, s2;
-		for (il = ln - 1, s = p[il], i = il - 1,s2=s; i >= 0; i--)
-		{
-			s2 += p[i];
-			if (s2 > s)
-				il = i, s = s2;
-		}
-		for (ir = ln, s = s + p[ir], i = ir + 1, s2 = s; i < n; i++)
-		{
-			s2 += p[i];
-			if (s2 > s)
-				ir = i, s = s2;
-		}
-		// judge
-		if (ls >= rs && ls >= s)
-			il = lil, ir = lir, s = ls;
-		else if (rs >= ls && rs >= s)
-			il = ril+ln, ir = rir+ln, s = rs;
-	}
-}
+#include <cstring>
+#include "b_tree.h"
+#include "fib_heap.h"
+#include "veb_tree.h"
 
 using std::cin;
 using std::cout;
@@ -189,7 +161,7 @@ int main()
 		cout << "input_n: " << n << endl;
 		cout << "input: "; for (int i = 0; i < n; i++) cout << p[i] << " "; cout << endl;
 
-		Queue q;
+		Queue<> q;
 		for (int i = 0; i < n; i++) q.enqueue(p[i]);
 		cout << "dequeue: ";
 		while (q.size() > 0)
@@ -380,6 +352,254 @@ int main()
 				cout << t.get_color_by_pos(i, j) << t.get_by_pos(i, j) << " ";
 			cout << endl;
 		}
+	}
+	// test cut_rod
+	{
+		cout << "---- test cut_rod ----" << endl;
+		int n = 10;
+		int p[] = { 1,5,8,9,10,17,17,20,28,30 };
+		cout << "input_n: " << n << endl;
+		cout << "input: "; for (int i = 0; i < n; i++) cout << p[i] << " "; cout << endl;
+		cout << "cut 10: " << cut_rod(p, n, 10) << endl;
+		cout << "cut 11: " << cut_rod(p, n, 11) << endl;
+		cout << "cut 27: " << cut_rod(p, n, 27) << endl;
+		cout << "cut 36: " << cut_rod(p, n, 36) << endl;
+	}
+	// test LCS_length
+	{
+		cout << "---- test LCS_length ----" << endl;
+		const char *p1 = "ABCBDAB";
+		const char *p2 = "BDCABA";
+		cout << "input: " << p1 << endl;
+		cout << "       " << p2 << endl;
+		cout << "len: " << LCS_length(p1, (int)strlen(p1), p2, (int)strlen(p2)) << endl;
+		p1 = "ACCGGTCGAGTGCGCGGAAGCCGGCCGAA";
+		p2 = "GTCGTTCGGAATGCCGTTGCTCTGTAAA";
+		cout << "input: " << p1 << endl;
+		cout << "       " << p2 << endl;
+		cout << "len: " << LCS_length(p1, (int)strlen(p1), p2, (int)strlen(p2)) << endl;
+	}
+	// test BTree
+	{
+		cout << "---- test BTree ----" << endl;
+		const int n = 25;
+		int p[] = { 22,17,15,3,24,18,5,9,2,16,20,12,1,7,13,25,4,8,19,6,21,14,11,10,23 };
+		const char* c = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		cout << "input_n: " << n << endl;
+		cout << "input: "; for (int i = 0; i < n; i++) cout << c[p[i]] << " "; cout << endl;
+
+		BTree t;
+		auto print_t = [c](BTree &t)
+		{
+			auto u = t.root;
+			for (int i = 0; i < u->n; i++) cout << c[u->k[i]]; cout << " ";
+			cout << endl;
+			if (!u->leaf)
+			{
+				for (int i = 0; i <= u->n; i++)
+				{
+					auto u2 = u->c[i];
+					for (int i2 = 0; i2 < u2->n; i2++)
+						cout << c[u2->k[i2]];
+					cout << " ";
+				}
+				cout << endl;
+				if (!u->c[0]->leaf)
+				{
+					for (int i = 0; i <= u->n; i++)
+					{
+						auto u2 = u->c[i];
+						for (int i2 = 0; i2 <= u2->n; i2++)
+						{
+							auto u3 = u2->c[i2];
+							for (int i3 = 0; i3 < u3->n; i3++) cout << c[u3->k[i3]]; cout << " ";
+						}
+					}
+					cout << endl;
+				}
+			}
+		};
+		for (int i = 0; i < n; i++)
+		{
+			t.insert(p[i]);
+			cout << "after insert " << c[p[i]] << ": " << endl;
+			print_t(t);
+		}
+		cout << "search " << c[20] << ": " << t.search(20) << endl;
+		cout << "search " << c[2] << ": " << t.search(2) << endl;
+		cout << "search " << c[28] << ": " << t.search(28) << endl;
+		cout << "search " << c[15] << ": " << t.search(15) << endl;
+		t.remove(12);
+		cout << "after remove " << c[12] << ": " << endl;
+		print_t(t);
+		t.remove(17);
+		cout << "after remove " << c[17] << ": " << endl;
+		print_t(t);
+		t.remove(19);
+		cout << "after remove " << c[19] << ": " << endl;
+		print_t(t);
+	}
+	// test FibHeap
+	{
+		cout << "---- test FibHeap ----" << endl;
+		const int n = 25;
+		int p[] = { 22,17,15,3,24,18,5,9,2,16,20,12,1,7,13,25,4,8,19,6,21,14,11,10,23 };
+		const char* c = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		cout << "input_n: " << n << endl;
+		cout << "input: "; for (int i = 0; i < n; i++) cout << c[p[i]] << " "; cout << endl;
+
+		auto print_h = [c](FibHeap& h)
+		{
+			Queue<FibHeap::Unit*> q;
+			auto u = h.root;
+			do
+			{
+				q.enqueue(u);
+				u = u->right;
+			} while (u != h.root);
+			q.enqueue(nullptr);
+			bool finish_row = false;
+			while (true)
+			{
+				auto u = q.dequeue();
+				if (u == nullptr)
+				{
+					if (finish_row)
+						return;
+					finish_row = true;
+					cout << endl;
+					q.enqueue(nullptr);
+				}
+				else
+				{
+					finish_row = false;
+					cout << c[u->k] << "(" << u->degree << ")" << (u->mark ? "*" : "") << " ";
+					if (u->child != nullptr)
+					{
+						auto c = u->child;
+						do
+						{
+							q.enqueue(c);
+							c = c->right;
+						} while (c != u->child);
+					}
+				}
+			}
+		};
+
+		FibHeap h, h2;
+		double* v[n];
+		int d;
+		for (int i = 0; i < 14; i++)
+			v[p[i] - 1] = h.insert(p[i], p[i]);
+		for (int i = 14; i < n; i++)
+			v[p[i] - 1] = h2.insert(p[i], p[i]);
+		cout << "finish insert: " << endl;
+		cout << "h: " << endl; print_h(h);
+		cout << "h2: " << endl; print_h(h2);
+
+		d = (int)h.extract_min(); v[d - 1] = h.insert(d, d);
+		d = (int)h2.extract_min(); v[d - 1] = h2.insert(d, d);
+		cout << "extract_min + insert: " << endl;
+		cout << "h: " << endl; print_h(h);
+		cout << "h2: " << endl; print_h(h2);
+
+		h.combine(h2);
+		cout << "combine: " << endl;
+		print_h(h);
+
+		d = (int)h.extract_min(); v[d - 1] = h.insert(d, d);
+		cout << "extract_min + insert: " << endl;
+		print_h(h);
+
+		cout << "remove " << c[(int)h.remove(v[16])] << ": " << endl;
+		print_h(h);
+
+		cout << "remove " << c[(int)h.remove(v[12])] << ": " << endl;
+		print_h(h);
+
+		cout << "remove " << c[(int)h.remove(v[8])] << ": " << endl;
+		print_h(h);
+
+		cout << "remove " << c[(int)h.remove(v[4])] << ": " << endl;
+		print_h(h);
+	}
+	// test ProtoVEB
+	{
+		cout << "---- test ProtoVEB ----" << endl;
+		cout << "sizeof(ProtoVEB<256>): " << sizeof(ProtoVEB<256>) << endl;
+		const int n = 11;
+		int p[] = { 10,20,30,40,50,60,70,80,90,100,110 };
+		cout << "input_n: " << n << endl;
+		cout << "input: "; for (int i = 0; i < n; i++) cout << p[i] << " "; cout << endl;
+
+		ProtoVEB<256> proto_vEB256;
+		auto print_vEB = [&proto_vEB256, p, n]()
+		{
+			for (int i = 0; i < n; i++)
+				if (proto_vEB256.is_member(p[i]))
+					cout << p[i] << " ";
+			cout << endl;
+		};
+		for (int i = 0; i < n; i++)
+			proto_vEB256.insert(p[i]);
+		cout << "finish insert: "; print_vEB();
+
+		cout << "minimum: " << proto_vEB256.minimum() << endl;
+		cout << "successor 30: " << proto_vEB256.successor(30) << endl;
+
+		proto_vEB256.remove(30);
+		cout << "remove 30: "; print_vEB();
+	}
+	// test VEBTree
+	{
+		cout << "---- test VEBTree ----" << endl;
+		cout << "sizeof(VEBTree<15>): " << sizeof(VEBTree<15>) << endl;
+		cout << "sizeof(VEBTree<16>): " << sizeof(VEBTree<16>) << endl;
+		cout << "sizeof(VEBTree<127>): " << sizeof(VEBTree<127>) << endl;
+		cout << "sizeof(VEBTree<128>): " << sizeof(VEBTree<128>) << endl;
+		cout << "sizeof(VEBTree<255>): " << sizeof(VEBTree<255>) << endl;
+		cout << "sizeof(VEBTree<256>): " << sizeof(VEBTree<256>) << endl;
+		const int n = 11;
+		int p[] = { 10,20,30,40,50,60,70,80,90,100,110 };
+		cout << "input_n: " << n << endl;
+		cout << "input: "; for (int i = 0; i < n; i++) cout << p[i] << " "; cout << endl;
+
+		VEBTree<127> vEB;
+		auto print_vEB = [&vEB, p, n]()
+		{
+			cout << "(Exist:)";
+			for (int i = 0; i < n; i++)
+				if (vEB.is_member(p[i]))
+					cout << p[i] << " ";
+			cout << endl;
+		};
+		for (int i = 0; i < n; i++)
+			vEB.insert(p[i]);
+		cout << "finish insert: "; print_vEB();
+
+		vEB.remove(10);
+		vEB.remove(40);
+		vEB.remove(50);
+		vEB.remove(60);
+		vEB.remove(110);
+		cout << "finish remove: "; print_vEB();
+
+		cout << "minimum: " << vEB.minimum() << endl;
+		cout << "maximum: " << vEB.maximum() << endl;
+		cout << "successor 30: " << vEB.successor(30) << endl;
+
+		vEB.insert(50);
+		vEB.insert(50);
+		vEB.insert(50);
+		cout << "insert 50 x3: "; print_vEB();
+
+		vEB.remove(50);
+		vEB.remove(50);
+		cout << "remove 50 x2: "; print_vEB();
+
+		vEB.remove(50);
+		cout << "remove 50 x1: "; print_vEB();
 	}
 
 	return 1;

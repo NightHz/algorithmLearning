@@ -192,3 +192,183 @@ after remove 3:
 B5 
 B2 B7 
 B0 B0 R6 R8 
+---- test cut_rod ----
+input_n: 10
+input: 1 5 8 9 10 17 17 20 28 30 
+cut 10: 30
+cut 11: 33
+cut 27: 84
+cut 36: 112
+---- test LCS_length ----
+input: ABCBDAB
+       BDCABA
+len: 4
+input: ACCGGTCGAGTGCGCGGAAGCCGGCCGAA
+       GTCGTTCGGAATGCCGTTGCTCTGTAAA
+len: 20
+---- test BTree ----
+input_n: 25
+input: W R P D Y S F J C Q U M B H N Z E I T G V O L K X 
+after insert W: 
+W 
+after insert R: 
+RW 
+after insert P: 
+PRW 
+after insert D: 
+DPRW 
+after insert Y: 
+DPRWY 
+after insert S: 
+R 
+DPS WY 
+after insert F: 
+R 
+DFPS WY 
+after insert J: 
+R 
+DFJPS WY 
+after insert C: 
+JR 
+CDF PS WY 
+after insert Q: 
+JR 
+CDF PQS WY 
+after insert U: 
+JR 
+CDF PQS UWY 
+after insert M: 
+JR 
+CDF MPQS UWY 
+after insert B: 
+JR 
+BCDF MPQS UWY 
+after insert H: 
+JR 
+BCDFH MPQS UWY 
+after insert N: 
+JR 
+BCDFH MNPQS UWY 
+after insert Z: 
+JR 
+BCDFH MNPQS UWYZ 
+after insert E: 
+DJR 
+BCE FH MNPQS UWYZ 
+after insert I: 
+DJR 
+BCE FHI MNPQS UWYZ 
+after insert T: 
+DJR 
+BCE FHI MNPQS TUWYZ 
+after insert G: 
+DJR 
+BCE FGHI MNPQS TUWYZ 
+after insert V: 
+DJRW 
+BCE FGHI MNPQS TUV YZ 
+after insert O: 
+DJPRW 
+BCE FGHI MNO QS TUV YZ 
+after insert L: 
+P 
+DJ RW 
+BCE FGHI LMNO QS TUV YZ 
+after insert K: 
+P 
+DJ RW 
+BCE FGHI KLMNO QS TUV YZ 
+after insert X: 
+P 
+DJ RW 
+BCE FGHI KLMNO QS TUV XYZ 
+search U: 20
+search C: 2
+search 2: 0
+search P: 15
+after remove M: 
+DJPRW 
+BCE FGHI KLNO QS TUV XYZ 
+after remove R: 
+DJPTW 
+BCE FGHI KLNO QS UV XYZ 
+after remove T: 
+DJPW 
+BCE FGHI KLNO QSUV XYZ 
+---- test FibHeap ----
+input_n: 25
+input: W R P D Y S F J C Q U M B H N Z E I T G V O L K X 
+finish insert: 
+h: 
+B(0) C(0) D(0) P(0) R(0) W(0) Y(0) S(0) F(0) J(0) Q(0) U(0) M(0) H(0) 
+h2: 
+E(0) N(0) Z(0) I(0) T(0) G(0) V(0) O(0) L(0) K(0) X(0) 
+extract_min + insert: 
+h: 
+B(0) C(3) J(2) H(0) 
+D(0) P(1) F(2) Q(0) M(1) 
+R(0) S(0) W(1) U(0) 
+Y(0) 
+h2: 
+E(0) G(3) K(1) 
+V(0) L(1) I(2) X(0) 
+O(0) T(0) N(1) 
+Z(0) 
+combine: 
+B(0) C(3) J(2) H(0) E(0) G(3) K(1) 
+D(0) P(1) F(2) Q(0) M(1) V(0) L(1) I(2) X(0) 
+R(0) S(0) W(1) U(0) O(0) T(0) N(1) 
+Y(0) Z(0) 
+extract_min + insert: 
+B(0) C(4) E(3) 
+D(0) P(1) F(2) G(3) H(0) K(1) J(2) 
+R(0) S(0) W(1) V(0) L(1) I(2) X(0) Q(0) M(1) 
+Y(0) O(0) T(0) N(1) U(0) 
+Z(0) 
+remove R: 
+B(0) C(4) E(3) 
+D(0) P(0)* F(2) G(3) H(0) K(1) J(2) 
+S(0) W(1) V(0) L(1) I(2) X(0) Q(0) M(1) 
+Y(0) O(0) T(0) N(1) U(0) 
+Z(0) 
+remove N: 
+B(1) C(4) E(3) 
+Z(0) D(0) P(0)* F(2) G(3) H(0) K(1) J(2) 
+S(0) W(1) V(0) L(1) I(1)* X(0) Q(0) M(1) 
+Y(0) O(0) T(0) U(0) 
+remove J: 
+B(3) C(4) Q(0) 
+Z(0) M(1) E(2) D(0) P(0)* F(2) G(3) 
+U(0) H(0) K(1) S(0) W(1) V(0) L(1) I(1)* 
+X(0) Y(0) O(0) T(0) 
+remove F: 
+B(4) Q(2) 
+Z(0) M(1) E(2) C(3) S(0) W(1) 
+U(0) H(0) K(1) G(3) D(0) P(0)* Y(0) 
+X(0) V(0) L(1) I(1)* 
+O(0) T(0) 
+---- test ProtoVEB ----
+sizeof(ProtoVEB<256>): 1020
+input_n: 11
+input: 10 20 30 40 50 60 70 80 90 100 110 
+finish insert: 10 20 30 40 50 60 70 80 90 100 110 
+minimum: 10
+successor 30: 40
+remove 30: 10 20 40 50 60 70 80 90 100 110 
+---- test VEBTree ----
+sizeof(VEBTree<15>): 120
+sizeof(VEBTree<16>): 88
+sizeof(VEBTree<127>): 1152
+sizeof(VEBTree<128>): 1152
+sizeof(VEBTree<255>): 2168
+sizeof(VEBTree<256>): 1504
+input_n: 11
+input: 10 20 30 40 50 60 70 80 90 100 110 
+finish insert: (Exist:)10 20 30 40 50 60 70 80 90 100 110 
+finish remove: (Exist:)20 30 70 80 90 100 
+minimum: 20
+maximum: 100
+successor 30: 70
+insert 50 x3: (Exist:)20 30 50 70 80 90 100 
+remove 50 x2: (Exist:)20 30 50 70 80 90 100 
+remove 50 x1: (Exist:)20 30 70 80 90 100 

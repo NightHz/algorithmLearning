@@ -42,5 +42,17 @@
     <ClInclude Include="rb_tree.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="analysis_algorithms.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="b_tree.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="fib_heap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="veb_tree.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

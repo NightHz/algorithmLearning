@@ -31,19 +31,20 @@ public:
 	}
 };
 
+template <typename T = double>
 class Queue // 队列
 {
 private:
-	double *p; // 存储指针
+	T* p; // 存储指针
 	const int max_n; // 申请的最大空间
 	int head; // 队头
 	int tail; // 队尾
 	bool is_full; // 是否为满队列
 
 public:
-	using element_type = double;
+	using element_type = T;
 
-	Queue(int max_size = 80) : max_n(max_size), p(new double[max_size]), head(0), tail(0), is_full(false) {}
+	Queue(int max_size = 80) : max_n(max_size), p(new T[max_size]), head(0), tail(0), is_full(false) {}
 	Queue(Queue &q) = delete; // 禁止拷贝
 	~Queue() { delete[] p; }
 
@@ -51,7 +52,7 @@ public:
 	int max_size() { return max_n; }
 	void clear() { tail = head; is_full = false; }
 
-	void enqueue(double d) // 入队
+	void enqueue(T d) // 入队
 	{
 		if (is_full)
 			return;
@@ -59,11 +60,11 @@ public:
 		tail %= max_n;
 		is_full = (tail == head ? true : false);
 	}
-	double dequeue() // 出队
+	T dequeue() // 出队
 	{
 		if (!is_full && tail == head)
-			return double();
-		double result = p[head];
+			return T();
+		T result = p[head];
 		head++;
 		head %= max_n;
 		is_full = false;
