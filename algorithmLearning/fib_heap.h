@@ -131,6 +131,7 @@ public:
 
 	FibHeap() : root(nullptr), n(0) {}
 	FibHeap(FibHeap& h) = delete;
+	FibHeap& operator=(FibHeap& h) = delete;
 	~FibHeap() { clear(); }
 
 	void clear() { clear(root); }

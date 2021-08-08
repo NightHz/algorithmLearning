@@ -20,6 +20,7 @@ public:
 
 	ChainedHashTable(int _n = 10) : lists(new LinkedList[_n]), n(_n) {}
 	ChainedHashTable(ChainedHashTable &h) = delete; // ½ûÖ¹¿½±´
+	ChainedHashTable& operator=(ChainedHashTable &h) = delete;
 	~ChainedHashTable() { delete[] lists; }
 
 	double operator[](int k) { return search(k); }
@@ -66,6 +67,7 @@ public:
 
 	HashTable(int _n = 13) : table(new Unit[_n]), n(_n) { clear(); }
 	HashTable(HashTable &h) = delete; // ½ûÖ¹¿½±´
+	HashTable& operator=(HashTable &h) = delete;
 	~HashTable() { delete[] table; }
 
 	double operator[](int k) { return search(k); }

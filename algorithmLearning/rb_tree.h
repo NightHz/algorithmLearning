@@ -71,6 +71,7 @@ private:
 public:
 	RBTree() : BinarySearchTree() { nil->color = Unit::B; }
 	RBTree(RBTree &t) = delete; // ½ûÖ¹¿½±´
+	RBTree& operator=(RBTree &t) = delete;
 	~RBTree() {}
 
 	int get_black_height() { return get_black_height(root); }

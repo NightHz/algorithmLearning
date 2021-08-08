@@ -52,6 +52,7 @@ public:
 
 	Heap(int max_size = 80) : max_n(max_size), p(new T[max_size]), n(0) {}
 	Heap(Heap &h) = delete; // ½ûÖ¹¿½±´
+	Heap& operator=(Heap &h) = delete;
 	~Heap() { delete[] p; }
 
 	int size() { return n; }

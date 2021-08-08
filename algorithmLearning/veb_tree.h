@@ -29,6 +29,7 @@ private:
 public:
 	ProtoVEB() {}
 	ProtoVEB(ProtoVEB& vEB) = delete;
+	ProtoVEB& operator=(ProtoVEB& vEB) = delete;
 	~ProtoVEB() {}
 
 	bool is_member(int x)
@@ -74,6 +75,7 @@ private:
 public:
 	ProtoVEB() : a{ 0,0 } {}
 	ProtoVEB(ProtoVEB& vEB) = delete;
+	ProtoVEB& operator=(ProtoVEB& vEB) = delete;
 	~ProtoVEB() {}
 	bool is_member(int x) { return a[x] != 0; }
 	int minimum() { if (a[0] != 0) return 0; else if (a[1] != 0) return 1; else return -1; }
@@ -105,6 +107,7 @@ private:
 public:
 	VEBTree() :min(-1), max(-1) {}
 	VEBTree(VEBTree& vEB) = delete;
+	VEBTree& operator=(VEBTree& vEB) = delete;
 	~VEBTree() {}
 
 	bool is_empty() { return min == -1; }
@@ -193,6 +196,7 @@ private:
 public:
 	VEBTree() : a{ 0,0 } {}
 	VEBTree(VEBTree& vEB) = delete;
+	VEBTree& operator=(VEBTree& vEB) = delete;
 	~VEBTree() {}
 	bool is_empty() { return (a[0] == 0 && a[1] == 0); }
 	bool is_member(int x) { return a[x] != 0; }

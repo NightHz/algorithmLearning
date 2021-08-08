@@ -135,6 +135,7 @@ public:
 
 	BinarySearchTree() : root(nullptr), nil(new Unit) { root = nil; nil->e = double(); }
 	BinarySearchTree(BinarySearchTree& t) = delete;
+	BinarySearchTree& operator=(BinarySearchTree& t) = delete;
 	~BinarySearchTree() { clear(); delete nil; }
 
 	void clear() { clear(root); }

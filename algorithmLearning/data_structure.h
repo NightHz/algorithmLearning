@@ -11,6 +11,7 @@ public:
 
 	Stack(int max_size = 80) : max_n(max_size), p(new double[max_size]), top(0) {}
 	Stack(Stack &s) = delete; // ½ûÖ¹¿½±´
+	Stack& operator=(Stack &s) = delete;
 	~Stack() { delete[] p; }
 
 	int size() { return top; }
@@ -46,6 +47,7 @@ public:
 
 	Queue(int max_size = 80) : max_n(max_size), p(new T[max_size]), head(0), tail(0), is_full(false) {}
 	Queue(Queue &q) = delete; // ½ûÖ¹¿½±´
+	Queue& operator=(Queue &q) = delete;
 	~Queue() { delete[] p; }
 
 	int size() { return is_full ? max_n : (tail - head + max_n) % max_n; }
@@ -90,6 +92,7 @@ public:
 
 	LinkedList() : nil(new Unit()) { nil->prev = nil->next = nil; }
 	LinkedList(LinkedList &l) = delete; // ½ûÖ¹¿½±´
+	LinkedList& operator=(LinkedList &l) = delete;
 	~LinkedList() { clear(); delete nil; }
 
 	double operator[](int k) { return search(k); }

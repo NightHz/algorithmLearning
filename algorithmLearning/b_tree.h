@@ -124,6 +124,7 @@ private:
 public:
 	BTree() : root(new Unit) { root->leaf = true; root->n = 0; }
 	BTree(BTree& t) = delete;
+	BTree& operator=(BTree& t) = delete;
 	~BTree() { clear(); }
 
 	void clear() { clear(root); }
