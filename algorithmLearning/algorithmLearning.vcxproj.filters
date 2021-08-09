@@ -54,5 +54,17 @@
     <ClInclude Include="veb_tree.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="graph.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="graph_algorithms.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="graph_template.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="disjoint_set.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -10,4 +10,8 @@
   - [B树](algorithmLearning/b_tree.h)
   - [斐波那契堆](algorithmLearning/fib_heap.h)
   - [van Emde Boas 树](algorithmLearning/veb_tree.h)
+  - [不相交集合](algorithmLearning/disjoint_set.h)
 - [分析与策略](algorithmLearning/analysis_algorithms.h)
+- 图
+  - [图表示](algorithmLearning/graph_template.h)
+  - [图算法](algorithmLearning/graph_algorithms.h)

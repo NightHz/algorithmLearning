@@ -133,7 +133,11 @@
     <ClInclude Include="binary_search_tree.h" />
     <ClInclude Include="b_tree.h" />
     <ClInclude Include="data_structure.h" />
+    <ClInclude Include="disjoint_set.h" />
     <ClInclude Include="fib_heap.h" />
+    <ClInclude Include="graph.h" />
+    <ClInclude Include="graph_algorithms.h" />
+    <ClInclude Include="graph_template.h" />
     <ClInclude Include="hash_table.h" />
     <ClInclude Include="heap.h" />
     <ClInclude Include="analysis_algorithms.h" />
