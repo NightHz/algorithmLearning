@@ -66,5 +66,14 @@
     <ClInclude Include="disjoint_set.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="matrix.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="linear_programming.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_fourier_transform.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

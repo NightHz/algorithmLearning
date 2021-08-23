@@ -12,6 +12,10 @@
 #include "veb_tree.h"
 #include "graph.h"
 #include "graph_algorithms.h"
+#include "matrix.h"
+#include "linear_programming.h"
+#include "fast_fourier_transform.h"
+#include <random>
 
 using std::cin;
 using std::cout;
@@ -1054,6 +1058,200 @@ int main()
 			cout << "(" << it->i << "," << it->j << ")(" << it->f << "/" << it->c << ") ";
 		cout << endl;
 	}
+	// test LP
+	{
+		cout << "---- test LP ----" << endl;
+		LPStandard lp_s(LPSize(3, 3));
+		lp_s.C << 3 << 1 << 2;
+		lp_s.A << 1 << 1 << 3; lp_s.B << 30;
+		lp_s.A << 2 << 2 << 5; lp_s.B << 24;
+		lp_s.A << 4 << 1 << 2; lp_s.B << 36;
+		cout << "..LP Standard:" << endl;
+		lp_s.print();
 
-	return 1;
+		LPAugmented lp_a(lp_s);
+		cout << "..LP Augmented:" << endl;
+		lp_a.print();
+
+		LPAugmented lp_a2 = lp_a;
+		LP_pivot(lp_a2, 2, 0);
+		cout << "..pivot 1 times:" << endl;
+		lp_a2.print();
+
+		LP_pivot(lp_a2, 2, 5);
+		cout << "..pivot 2 times:" << endl;
+		lp_a2.print();
+
+		LPAugmented lp_a_init = LP_simplex_init(lp_s);
+		cout << "..init: " << lp_a_init.feasible << endl;
+		lp_a_init.print();
+
+		LPAugmented lp_a_solve = LP_simplex(lp_s);
+		cout << "..solve: "<<lp_s.optimal << endl;
+		lp_a_solve.print();
+		cout << "X = "; for (int i = 0; i < lp_s.X.rows; i++) cout << lp_s.X[i] << " "; cout << endl;
+		cout << "z = " << lp_a_solve.v << endl;
+
+		LPStandard lp_s2(LPSize(2, 2));
+		lp_s2.C << 2 << -1;
+		lp_s2.A << 2 << -1; lp_s2.B << 2;
+		lp_s2.A << 1 << -5; lp_s2.B << -4;
+		cout << "..LP Standard:" << endl;
+		lp_s2.print();
+
+		LPAugmented lp_a2_init = LP_simplex_init(lp_s2);
+		cout << "..init: " << lp_a2_init.feasible << endl;
+		lp_a2_init.print();
+
+		LPAugmented lp_a2_solve = LP_simplex(lp_s2);
+		cout << "..solve: " << lp_s2.optimal << endl;
+		lp_a2_solve.print();
+		cout << "X = "; for (int i = 0; i < lp_s2.X.rows; i++) cout << lp_s2.X[i] << " "; cout << endl;
+		cout << "z = " << lp_a2_solve.v << endl;
+
+		LPStandard lp_s3(LPSize(3, 2));
+		lp_s3.C << 1 << 3;
+		lp_s3.A << -1 << 1; lp_s3.B << -1;
+		lp_s3.A << -1 << -1; lp_s3.B << -3;
+		lp_s3.A << -1 << 4; lp_s3.B << 2;
+		cout << "..LP Standard:" << endl;
+		lp_s3.print();
+
+		LPAugmented lp_a3_solve = LP_simplex(lp_s3);
+		cout << "..solve: " << lp_s3.optimal << endl;
+		lp_a3_solve.print();
+		cout << "X = "; for (int i = 0; i < lp_s3.X.rows; i++) cout << lp_s3.X[i] << " "; cout << endl;
+		cout << "z = " << lp_a3_solve.v << endl;
+
+		LPStandard lp_s4(LPSize(3, 2));
+		lp_s4.C << 1 << -2;
+		lp_s4.A << 1 << 2; lp_s4.B << 4;
+		lp_s4.A << -2 << -6; lp_s4.B << -12;
+		lp_s4.A << 0 << 1; lp_s4.B << 1;
+		cout << "..LP Standard:" << endl;
+		lp_s4.print();
+
+		LPAugmented lp_a4_solve = LP_simplex(lp_s4);
+		cout << "..solve: " << lp_s4.optimal << endl;
+		lp_a4_solve.print();
+		cout << "X = "; for (int i = 0; i < lp_s4.X.rows; i++) cout << lp_s4.X[i] << " "; cout << endl;
+		cout << "z = " << lp_a4_solve.v << endl;
+	}
+	// test FFT
+	{
+		cout << "---- test FFT ----" << endl;
+		auto func = [](double x)
+		{ return 1 + 2 * std::sin(2 * PI * x * 1) + 3 * std::sin(2 * PI * x * 2) + 4 * std::sin(2 * PI * x * 3); };
+		const int n = 32;
+		Complex f[n];
+		Complex g[n];
+		Complex f_[n];
+		for (int i = 0; i < n; i++)
+			f[i] = func((double)i / n);
+		cout << "f:  "; for (int i = 0; i < n; i++) cout << f[i] << " "; cout << endl;
+
+		cout << "DFT:" << endl;
+		DFT(f, g, n);
+		DFT_inv(g, f_, n);
+		cout << "g:  "; for (int i = 0; i < n; i++) cout << g[i] << " "; cout << endl;
+		cout << "f_: "; for (int i = 0; i < n; i++) cout << f_[i] << " "; cout << endl;
+
+		cout << "FFT:" << endl;
+		FFT_recursive(f, g, n);
+		FFT_inv_recursive(g, f_, n);
+		cout << "g:  "; for (int i = 0; i < n; i++) cout << g[i] << " "; cout << endl;
+		cout << "f_: "; for (int i = 0; i < n; i++) cout << f_[i] << " "; cout << endl;
+
+		Complex a0[4]{ 2,5,0,0 }; // 2+5x
+		Complex b0[4]{ 4,3,0,0 }; // 4+3x
+		Complex c0[4]; // =a0xb0=8+26x+15x^2
+		Complex a1[4], b1[4], c1[4];
+		FFT_recursive(a0, a1, 4);
+		FFT_recursive(b0, b1, 4);
+		for (int i = 0; i < 4; i++)
+			c1[i] = a1[i] * b1[i];
+		FFT_inv_recursive(c1, c0, 4);
+		cout << "a0:  "; for (int i = 0; i < 4; i++) cout << a0[i] << " "; cout << endl;
+		cout << "b0:  "; for (int i = 0; i < 4; i++) cout << b0[i] << " "; cout << endl;
+		cout << "c0:  "; for (int i = 0; i < 4; i++) cout << c0[i] << " "; cout << endl;
+
+		cout << "original:" << endl;
+		cout << "f:  "; for (int i = 0; i < n; i++) cout << f[i] << " "; cout << endl;
+		cout << "g:  "; for (int i = 0; i < n; i++) cout << g[i] << " "; cout << endl;
+
+		const int n2 = n * 4;
+		Complex f2[n2];
+		Complex g2[n2];
+		for (int i = 0; i < n2; i++)
+			f2[i] = func((double)i / n);
+		FFT_recursive(f2, g2, n2);
+		cout << "repeat four times:" << endl;
+		cout << "f2: "; for (int i = 0; i < n2; i++) cout << f2[i] << " "; cout << endl;
+		cout << "g2: "; for (int i = 0; i < n2; i++) cout << g2[i] << " "; cout << endl;
+
+		const int n3 = n2;
+		Complex f3[n3];
+		Complex g3[n3];
+		for (int i = 0; i < n3; i++)
+			f3[i] = func((double)i / n * 1.1);
+		FFT_recursive(f3, g3, n3);
+		cout << "repeat less than four times and unaligned border:" << endl;
+		cout << "f3: "; for (int i = 0; i < n3; i++) cout << f3[i] << " "; cout << endl;
+		cout << "g3: "; for (int i = 0; i < n3; i++) cout << g3[i] << " "; cout << endl;
+
+		const int n4 = n2;
+		Complex f4[n4];
+		Complex g4[n4];
+		std::default_random_engine rand_e((unsigned int)time(0));
+		std::uniform_real_distribution<> rand(-0.5, 0.5);
+		for (int i = 0; i < n4; i++)
+			f4[i] = f2[i] + rand(rand_e);
+		FFT_recursive(f4, g4, n4);
+		cout << "repeat four times + noise:" << endl;
+		cout << "f4: "; for (int i = 0; i < n4; i++) cout << f4[i] << " "; cout << endl;
+		cout << "g4: "; for (int i = 0; i < n4; i++) cout << g4[i] << " "; cout << endl;
+
+		const int n5 = n4;
+		Complex f5[n5];
+		Complex g5[n5];
+		for (int i = 0; i < n5; i++)
+			f5[i] = func((double)i / n * 1.1) + rand(rand_e);
+		FFT_recursive(f5, g5, n5);
+		cout << "repeat less than four times and unaligned border + noise:" << endl;
+		cout << "f5: "; for (int i = 0; i < n5; i++) cout << f5[i] << " "; cout << endl;
+		cout << "g5: "; for (int i = 0; i < n5; i++) cout << g5[i] << " "; cout << endl;
+
+		auto func2 = [](double x) { return (x == 0 ? 1 : std::sin(2 * PI * x) / (2 * PI * x)); };
+		const int n6 = 64;
+		Complex f6[n6];
+		Complex g6[n6];
+		for (int i = 0; i < n6; i++)
+			f6[i] = func2(4.0 * i / n6 - 2);
+		FFT_recursive(f6, g6, n6);
+		cout << "sin(x)/x [N=64,L=4]:" << endl;
+		cout << "f6: "; for (int i = 0; i < n6; i++) cout << f6[i] << " "; cout << endl;
+		cout << "g6: "; for (int i = 0; i < n6; i++) cout << g6[i] << " "; cout << endl;
+
+		const int n7 = 128;
+		Complex f7[n7];
+		Complex g7[n7];
+		for (int i = 0; i < n7; i++)
+			f7[i] = func2(4.0 * i / n7 - 2);
+		FFT_recursive(f7, g7, n7);
+		cout << "sin(x)/x [N=128,L=4]:" << endl;
+		cout << "f7: "; for (int i = 0; i < n7; i++) cout << f7[i] << " "; cout << endl;
+		cout << "g7: "; for (int i = 0; i < n7; i++) cout << g7[i] << " "; cout << endl;
+
+		const int n8 = 128;
+		Complex f8[n8];
+		Complex g8[n8];
+		for (int i = 0; i < n8; i++)
+			f8[i] = func2(8.0 * i / n8 - 4);
+		FFT_recursive(f8, g8, n8);
+		cout << "sin(x)/x [N=128,L=8]:" << endl;
+		cout << "f8: "; for (int i = 0; i < n8; i++) cout << f8[i] << " "; cout << endl;
+		cout << "g8: "; for (int i = 0; i < n8; i++) cout << g8[i] << " "; cout << endl;
+	}
+
+	return 0;
 }

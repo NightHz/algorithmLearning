@@ -134,6 +134,7 @@
     <ClInclude Include="b_tree.h" />
     <ClInclude Include="data_structure.h" />
     <ClInclude Include="disjoint_set.h" />
+    <ClInclude Include="fast_fourier_transform.h" />
     <ClInclude Include="fib_heap.h" />
     <ClInclude Include="graph.h" />
     <ClInclude Include="graph_algorithms.h" />
@@ -141,6 +142,8 @@
     <ClInclude Include="hash_table.h" />
     <ClInclude Include="heap.h" />
     <ClInclude Include="analysis_algorithms.h" />
+    <ClInclude Include="linear_programming.h" />
+    <ClInclude Include="matrix.h" />
     <ClInclude Include="rb_tree.h" />
     <ClInclude Include="sort.h" />
     <ClInclude Include="veb_tree.h" />

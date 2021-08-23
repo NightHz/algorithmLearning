@@ -15,3 +15,5 @@
 - 图
   - [图表示](algorithmLearning/graph_template.h)
   - [图算法](algorithmLearning/graph_algorithms.h)
+- [线性规划](algorithmLearning/linear_programming.h)
+- [快速傅里叶变换](algorithmLearning/fast_fourier_transform.h)

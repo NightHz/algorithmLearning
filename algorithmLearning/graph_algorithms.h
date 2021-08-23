@@ -446,8 +446,8 @@ void flow_push_relabel(GraphFlow& g, int s, int t)
 {
 	flow_init(g);
 	int n = g.get_vertex_n();
-	int* e = new int[n] {0};
-	int* h = new int[n] {0};
+	int* e = new int[n] {0}; // 超额流
+	int* h = new int[n] {0}; // 高度标签
 	h[s] = n;
 	for (auto it = g.begin_edge(s); it != g.end_edge(s); it++)
 	{
@@ -463,17 +463,17 @@ void flow_push_relabel(GraphFlow& g, int s, int t)
 		g_f.add_edge(it->i, it->j, EdgeFlow(it->c - it->f));
 		g_f.add_edge(it->j, it->i, EdgeFlow(it->f));
 	}
-	bool overflow = true;
-	while (overflow)
+	bool have_excessflow = true; // 检查是否有超额流
+	while (have_excessflow)
 	{
-		overflow = false;
+		have_excessflow = false;
 		for (auto it = g.begin_vertex(); it != g.end_vertex(); it++)
 		{
 			if (it->i == t)
 				continue;
 			while (e[it->i] > 0)
 			{
-				overflow = true;
+				have_excessflow = true;
 				flow_push(g, g_f, e, it->i, flow_relabel(g, g_f, h, it->i));
 			}
 		}
