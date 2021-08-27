@@ -75,5 +75,11 @@
     <ClInclude Include="fast_fourier_transform.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="rsa.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="string_match.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

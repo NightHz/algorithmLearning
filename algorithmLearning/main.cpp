@@ -16,6 +16,8 @@
 #include "linear_programming.h"
 #include "fast_fourier_transform.h"
 #include <random>
+#include "rsa.h"
+#include "string_match.h"
 
 using std::cin;
 using std::cout;
@@ -1202,7 +1204,7 @@ int main()
 		const int n4 = n2;
 		Complex f4[n4];
 		Complex g4[n4];
-		std::default_random_engine rand_e((unsigned int)time(0));
+		std::default_random_engine rand_e(431341);
 		std::uniform_real_distribution<> rand(-0.5, 0.5);
 		for (int i = 0; i < n4; i++)
 			f4[i] = f2[i] + rand(rand_e);
@@ -1251,6 +1253,79 @@ int main()
 		cout << "sin(x)/x [N=128,L=8]:" << endl;
 		cout << "f8: "; for (int i = 0; i < n8; i++) cout << f8[i] << " "; cout << endl;
 		cout << "g8: "; for (int i = 0; i < n8; i++) cout << g8[i] << " "; cout << endl;
+	}
+	// test Number
+	{
+		cout << "---- test Number ----" << endl;
+		Number n1{ 0,1,2 };
+		Number n2{ 0,3,1 }; n2.op = -1;
+		cout << "n1 = " << n1 << endl;
+		cout << "n2 = " << n2 << endl;
+		cout << "n1 + n2 = " << n1 + n2 << endl;
+		cout << "n1 - n2 = " << n1 - n2 << endl;
+		cout << "n2 << 3 = " << (n2 << 3) << endl;
+		cout << "n2 >> 3 = " << (n2 >> 3) << endl;
+		cout << "70 x n2 = " << 70 * n2 << endl;
+		cout << "-70000 x n2 = " << -70000 * n2 << endl;
+		cout << "n1 x n2 = " << n1 * n2 << endl;
+		cout << "n1 - n2 + 3 x n1 = " << n1 - n2 + 3 * n1 << endl;
+		Number n3{ 0,-2,1 }; n3.op = -1;
+		cout << "n3 = " << n3 << endl;
+		cout << "n1 - n2 - n3 = " << n1 - n2 - n3 << endl;
+		cout << "n1 / n3 = " << n1 / n3 << endl;
+		cout << "n1 % n3 = " << n1 % n3 << endl;
+		Number n4{ 6,5,4,3,2,1 }; n4.op = -1;
+		Number n5{ 9,8,7 }; n5.op = -1;
+		cout << "n4 = " << n4 << endl;
+		cout << "n5 = " << n5 << endl;
+		cout << "n4 / n5 = " << n4 / n5 << endl;
+		cout << "n4 % n5 = " << n4 % n5 << endl;
+		Number n6{ 2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6 };
+		Number n7{ 1,3,7,4,8,1,3,7,4,8,1,3,7,4,8,1,3,7,4,8,1,3,7,4,8,1,3,7,4,8,1,3,7,4,8,1,3,7,4,8 };
+		Number n8{ 6,8,7,2,9,6,8,7,2,9,6,8,7,2,9,6,8,7,2,9,6,8,7,2,9,6,8,7,2,9,6,8,7,2,9,6,8,7,2,9,
+				   6,8,7,2,9,6,8,7,2,9,6,8,7,2,9,6,8,7,2,9,6,8,7,2,9,6,8,7,2,9,6,8,7,2,9,6,8,7,2,9 };
+		cout << "n6 = " << n6 << endl;
+		cout << "n7 = " << n7 << endl;
+		cout << "n8 = " << n8 << endl;
+		cout << "n6 x n7 = " << n6 * n7 << endl;
+		cout << "n8 / n6 = " << n8 / n6 << endl;
+		cout << "n8 % n6 = " << n8 % n6 << endl;
+		cout << "n6 / n8 = " << n6 / n8 << endl;
+		cout << "n6 % n8 = " << n6 % n8 << endl;
+
+		cout << "gcd(99,78) = " << gcd(99, 78) << endl;
+		Number a, b;
+		cout << extended_euclid(99, 78, a, b) << " = " << a << "x99+" << b << "x78" << endl;
+		cout << "14x = 30 (mod 100)   x = " << modular_div(30, 14, 100) << endl;
+		Number mods[2]{ 5,13 }, remainders[2]{ 2,3 };
+		cout << "x % 5 = 2, x % 13 = 3   x = " << chinese_remainder(mods, remainders, 2) << endl;
+		cout << "7 ^ 560 (mod 561) = " << modular_power(7, 560, 561) << endl;
+	}
+	// test RSA // run time = 3s for intel i5-8400
+	{
+		cout << "---- test RSA ----" << endl;
+		Number p{ 7,6,8,2,6,5,8,7,3,3 };
+		Number q{ 1,0,0,8,3,3,3,5,8,4 };
+		Number n, e, d;
+		RSA_create(n, e, d, p, q);
+		cout << "p = " << p << endl;
+		cout << "q = " << q << endl;
+		cout << "RSA(n=" << n << ", e=" << e << ", d=" << d << ")" << endl;
+		Number msg = 12345678;
+		Number p_msg = RSA_encrypt(msg, e, n);
+		Number s_msg = RSA_decrypt(msg, d, n);
+		cout << "P(" << msg << ") = " << p_msg << endl;
+		cout << "S(" << msg << ") = " << s_msg << endl;
+		cout << "S(P(" << msg << ")) = " << RSA_decrypt(p_msg, d, n) << endl;
+		cout << "P(S(" << msg << ")) = " << RSA_encrypt(s_msg, e, n) << endl;
+	}
+	// test string_match
+	{
+		cout << "---- test string_match ----" << endl;
+		cout << "abdkabckabhkabbck(abbc) : " << native_string_match("abdkabckabhkabbck", "abbc") << endl;
+		cout << "abdkabckabhkabbck(abbc) : " << KMP_string_match("abdkabckabhkabbck", "abbc") << endl;
+		cout << "abababababacab(ababaca) : " << KMP_string_match("abababababacab", "ababaca") << endl;
+		cout << "abcdabcababcdabcabaa(abcdabcabaa) : " << KMP_string_match("abcdabcababcdabcabaa", "abcdabcabaa") << endl;
 	}
 
 	return 0;
